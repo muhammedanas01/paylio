@@ -135,6 +135,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'userauths.User'
 
+LOGIN_URL = 'userauths:login'
+LOGOUT_REDIRECT_URL = 'userauths:login'
+
 JAZZMIN_SETTINGS = {
     "site_header": "Paylio",
     "site_brand": "payment made easy",

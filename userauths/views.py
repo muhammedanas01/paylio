@@ -44,13 +44,18 @@ def loginview(request):
             if user is not None: # if there is a user
                 login(request, user)
                 messages.success(request, "you are loggedin")
-                return redirect("core:index")
+                return redirect("account:account")
+                # return redirect("core:index")
             else:
                 messages.warning(request, "username or password doesnt match.")
                 return redirect("userauths:login")
         except:
             messages.warning(request, "user does not exist.")
             pass
+    if request.user.is_authenticated:
+        messages.warning(request, "you have already loggedin")
+        return redirect('account:account')
+
     
     return render(request, "userauths/sign-in.html")
 

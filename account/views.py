@@ -2,9 +2,33 @@ from django.shortcuts import render, redirect
 from account.models import Account, KYC
 from account.forms import KYCForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
+def account(request):
+    if request.user.is_authenticated:
+        try:
+            user = request.user
+            kyc = KYC.objects.get(user=user)
+        except:
+            messages.warning(request, "you need to submit your kyc.")
+            return redirect('account:kyc-reg')
+        
+        account = Account.objects.get(user = request.user)
 
+    else:
+        messages.warning(request, "you need to submit your kyc.")
+    # form = KYCForm(instance=kyc)
+    context = {
+        'account':account,
+        'kyc':kyc,
+        'user':user
+    }
+    return render(request, "account/account.html", context)
+
+
+@login_required
 def kyc_registration(request):
     user = request.user
     account = Account.objects.get(user = user)

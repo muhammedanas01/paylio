@@ -6,7 +6,8 @@ from django.db.models.signals import post_save
 
 ACCOUNT_STATUS = (
     ('active', 'Active'),
-    ('in-active', 'In-active')
+    ('in-active', 'In-active'),
+    ('pending', 'Pending'),
 )
 
 MARITAL_STATUS = (
@@ -183,6 +184,7 @@ class KYC(models.Model):
     identity_image = models.ImageField(upload_to='kyc', null=True, blank=True)
     date_of_birth = models.DateTimeField(auto_now_add=False)
     signature = models.ImageField(upload_to='kyc', ) 
+    #email = models.EmailField(unique=False)
     # address
     country = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
