@@ -153,7 +153,6 @@ class Account(models.Model):
     account_balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     account_number = ShortUUIDField(unique=True, length=10, max_length=25, prefix='130', alphabet="0123456789")
     account_id = ShortUUIDField(unique=True, length=10, max_length=25, prefix='DEX', alphabet="0123456789")
-    account_number = ShortUUIDField(unique=True, length=10, max_length=25, prefix='130', alphabet="0123456789")
     red_code = ShortUUIDField(unique=True,length=10, max_length=20, alphabet='abcdefgh0123456789')
     account_status = models.CharField(max_length=100, choices=ACCOUNT_STATUS, default='in-active')
     date = models.DateTimeField(auto_now_add=True)
