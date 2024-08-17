@@ -3,6 +3,13 @@ import uuid
 from userauths.models import User
 from shortuuid.django_fields import ShortUUIDField
 from django.db.models.signals import post_save
+import random
+
+def generate_default_pin():
+    return random.randint(1000, 9999)
+
+
+
 
 ACCOUNT_STATUS = (
     ('active', 'Active'),
@@ -155,6 +162,7 @@ class Account(models.Model):
     account_id = ShortUUIDField(unique=True, length=10, max_length=25, prefix='DEX', alphabet="0123456789")
     red_code = ShortUUIDField(unique=True,length=10, max_length=20, alphabet='abcdefgh0123456789')
     account_status = models.CharField(max_length=100, choices=ACCOUNT_STATUS, default='in-active')
+    pin_number = ShortUUIDField(length=4, max_length=4, alphabet="0123456789", default=generate_default_pin)
     date = models.DateTimeField(auto_now_add=True)
     kyc_submitted = models.BooleanField(default=False)
     kyc_confirmed = models.BooleanField(default=False)

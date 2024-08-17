@@ -7,13 +7,13 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def account(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated: 
         try:
             user = request.user
-            kyc = KYC.objects.get(user=user)
+            kyc = KYC.objects.get(user=user) # here in account the kyc info will be showing so without submiting kyc user wont able to view their account.
         except:
             messages.warning(request, "you need to submit your kyc.")
-            return redirect('account:kyc-reg')
+            return redirect('account:kyc-reg') # here it redirect to kyc registration page for submiting kyc.
         
         account = Account.objects.get(user = request.user)
 
@@ -25,7 +25,7 @@ def account(request):
         'kyc':kyc,
         'user':user
     }
-    return render(request, "account/account.html", context)
+    return render(request, "account/account.html", context)# here in account.html page the kyc info are shown thats why user can't go to account page without submitting kyc.
 
 
 @login_required
@@ -34,31 +34,31 @@ def kyc_registration(request):
     account = Account.objects.get(user = user)
 
     try:
-        kyc = KYC.objects.get(user = user)
+        kyc = KYC.objects.get(user = user) # if user has already submitted kyc instead of creating new kyc user can update the existing kyc so this line is to check for already existing kyc.
     except KYC.DoesNotExist:
-        kyc = None
+        kyc = None # if there there is no existing kyc for user will create new one.
     
 
     if request.method == 'POST':
         print(request.POST)
         print(request.FILES)
-        form = KYCForm(request.POST, request.FILES, instance=kyc)
-        if form.is_valid():
-            new_form = form.save(commit=False)
-            new_form.user = user
+        form = KYCForm(request.POST, request.FILES, instance=kyc)# here we use django's inbuild form to get user's kyc details.(refer account.forms.py) here kyc will new or updated one refer line.no 37
+        if form.is_valid(): # validates if the form is filled correctly according to instruction.(#placeholder)
+            new_form = form.save(commit=False) # here form will be saved but will not commit database.
+            new_form.user = user # it sets the relation ship  to identify kyc and its user.(there is a user field in class KYC (account.models.py) )
             new_form.account = account
             new_form.save()
             messages.success(request, 'KYC form submitted successfully, In review now')
-            return redirect("core:index")
+            return redirect("account:account")
     
-    form = KYCForm(instance=kyc)
+    form = KYCForm(instance=kyc) # here the kyc is none it means it's a new form(refer line.no 39)
+    
     context = {
             'account': account,
             'form': form,
             'kyc':kyc
         }
     return render(request, 'account/kyc-form.html', context)
-
 
 # *1. def kyc_registration(request):*
 # - Defines a view function named kyc_registration that takes a request object as an argument.

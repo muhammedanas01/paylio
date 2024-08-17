@@ -47,7 +47,7 @@
                         {% csrf_token %}
                         <div class="send-banance">
                             <span class="mdr">You Send</span>
-                            <div class="input-area">
+                            <div class="input-area"> 
                                 <input class="xxlr" onkeyup="CalculateBalance()" placeholder="{{request.user.account.account_balance|intcomma}}" type="number" name="amount_sent" id="amount_sent">
                                 <select>
                                     <option value="1">USD</option>

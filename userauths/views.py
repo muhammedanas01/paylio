@@ -10,7 +10,7 @@ def registerview(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            new_user = form.save() # django checks for signal # post_save
+            new_user = form.save() # django checks for signal # post_save # and creates account for new user
             username = form.cleaned_data.get('username')
             messages.success(request, f"Hey {username} your account is created sucessfully.")
            # new_user = authenticate(username=form.cleaned_data['username'])
