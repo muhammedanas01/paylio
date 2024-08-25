@@ -60,6 +60,23 @@ def kyc_registration(request):
         }
     return render(request, 'account/kyc-form.html', context)
 
+def dashboard(request):
+    try:
+        user = request.user
+        account = Account.objects.get(user=user)
+        kyc = KYC.objects.get(user=user)
+    except:
+        messages.warning(request, "account not found")
+        return redirect("userauths:login")
+    context = {
+        "account": account,
+        "kyc": kyc,
+        "user": user
+    }
+
+    return render(request, 'account/dashboard.html', context)
+
+
 # *1. def kyc_registration(request):*
 # - Defines a view function named kyc_registration that takes a request object as an argument.
 

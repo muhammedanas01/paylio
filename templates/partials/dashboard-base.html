@@ -170,12 +170,12 @@
                     </div>
                     <ul>
                         <li>
-                            <a href="dashboard.html">
+                            <a href="{% url "account:dashboard" %}">
                                 <img src="{% static 'assets1/images/icon/dashboard.png' %}" alt="Dashboard"> <span>Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <a href="transactions.html">
+                            <a href="{% url "core:transaction-list" %}">
                                 <img src="{% static 'assets1/images/icon/transactions.png' %}" alt="Transactions"> <span>Transactions</span>
                             </a>
                         </li>
@@ -185,8 +185,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="receive-step-1.html">
-                                <img src="{% static 'assets1/images/icon/receive.png' %}" alt="Receive"> <span>Receive</span>
+                            <a href="{% url "core:search-requested-account" %}">
+                                <img src="{% static 'assets1/images/icon/receive.png' %}" alt="Receive"> <span>Request Money</span>
                             </a>
                         </li>
                         <li>

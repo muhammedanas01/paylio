@@ -18,6 +18,11 @@ TRANSACTION_STATUS = (
     ("failed","failed"),
     ("pending","pending"),
     ("processing","processing"),
+    ("requested","requested"),
+    ("request_processing","request_processing"),
+    ("request_rejected","request_rejected"),
+    ("request_sent","request_sent"),
+    ("request settled", "request settled"),
     ("none","none")
 )
 

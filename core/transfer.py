@@ -65,15 +65,17 @@ def AmountTransferProcess(request, account_number):
             user = request.user,
             amount = amount,
             description = description,
-            receiver = receiver,
+            
             sender = sender,
             sender_account = sender_account,
+
+            receiver = receiver,
             receiver_account = receiver_account,
-            transaction_status = "Proccessing",
+
+            transaction_status = "processing",
             transaction_type = "transfer"
         )
             new_transaction.save()
-            print(new_transaction.transaction_id, "111111111111110000000000000000000000000000333333333333333")
             transaction_id = new_transaction.transaction_id #"The transaction ID will be generated automatically, as specified in the models.py file. #Shortuuidfield
             return redirect("core:transfer-confirmation", receiver_account.account_number, transaction_id)# here after creating transaction obj we will redirect the page to  this url adress.  #adress: #path("transfer-confirmation/<account_number>/<transaction_id>/", transfer.TransferConfirmation, name="transfer-confirmation"),
 
@@ -129,6 +131,11 @@ def transfer_process(request,account_number, transaction_id):
             receiver_account.account_balance += transaction.amount # add's the amount sent by sender to reciever account.
             receiver_account.save()
 
+            transaction.transaction_status = "completed"
+            transaction.save()
+            #transaction.transaction_status = "completed"
+
+
             messages.success(request, "Transfer is sucessfull.")
             #return redirect("account:account") 
             return redirect("core:transfer-completed", receiver_account.account_number, transaction_id) 
@@ -155,3 +162,4 @@ def transfer_completed(request, account_number, transaction_id):
     }
 
     return render(request, "transfer/transfer-completed.html", context)
+
