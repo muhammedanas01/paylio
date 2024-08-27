@@ -3,6 +3,8 @@ from account.models import Account, KYC
 from account.forms import KYCForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from core.forms import CreditCardForm
+from core.models import CreditCard
 
 # Create your views here.
 @login_required
@@ -61,17 +63,39 @@ def kyc_registration(request):
     return render(request, 'account/kyc-form.html', context)
 
 def dashboard(request):
-    try:
-        user = request.user
-        account = Account.objects.get(user=user)
-        kyc = KYC.objects.get(user=user)
-    except:
-        messages.warning(request, "account not found")
+    if request.user.is_authenticated:
+        try:
+            user = request.user
+            account = Account.objects.get(user=user)
+            kyc = KYC.objects.get(user=user)
+        except:
+            messages.warning(request, "account not found")
+            return redirect("userauths:login")
+        
+        credit_card = CreditCard.objects.filter(user = request.user)
+  
+        if request.method == "POST":
+            form = CreditCardForm(request.POST)
+            if form.is_valid():
+                new_form = form.save(commit=False)
+                new_form.user = request.user
+                new_form.save()
+
+                card_id = new_form.card_id
+                messages.success(request,"Card added successfully")
+                return redirect("core:card_detail", card_id)
+        else:
+            form = CreditCardForm
+
+    else:
+        messages.warning(request, "you need to login to access the dashboard")
         return redirect("userauths:login")
     context = {
         "account": account,
         "kyc": kyc,
-        "user": user
+        "user": user,
+        "form":form,
+        "credit_card":credit_card
     }
 
     return render(request, 'account/dashboard.html', context)
